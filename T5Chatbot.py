@@ -6,7 +6,9 @@ import torch
 import numpy as np
 import random
 import time
+import os
 
+# Function to load data and models
 @st.cache_resource
 def load_data_and_models(csv_file):
     df = pd.read_csv(csv_file, encoding='windows-1252')
@@ -22,6 +24,20 @@ def load_data_and_models(csv_file):
 
     return df, corpus_instructions, corpus_responses, tokenizer, model, embedder, embeddings
 
+# Function to save the fine-tuned model locally
+def save_model(model, tokenizer, model_save_path="malizia_model"):
+    if not os.path.exists(model_save_path):
+        os.makedirs(model_save_path)
+    model.save_pretrained(model_save_path)
+    tokenizer.save_pretrained(model_save_path)
+
+# Function to load the saved model
+def load_saved_model(model_save_path="malizia_model"):
+    tokenizer = AutoTokenizer.from_pretrained(model_save_path)
+    model = AutoModelForSeq2SeqLM.from_pretrained(model_save_path).to("cuda" if torch.cuda.is_available() else "cpu")
+    return model, tokenizer
+
+# Function to get RAG response
 def get_rag_response(user_query, corpus_instructions, corpus_responses, embedder, tokenizer, model, embeddings, top_k=3):
     query_embedding = embedder.encode([user_query], convert_to_tensor=True)
 
@@ -107,8 +123,12 @@ st.text_input(
     on_change=handle_input,
 )
 
-
 # Refresh suggestions
 if st.button("🔄 Refresh Suggestions"):
     st.session_state.suggestions = random.sample(corpus_instructions, 4)
     st.rerun()
+
+# Save the model locally after training (you can call this when done with fine-tuning)
+if st.button("💾 Save Model"):
+    save_model(model, tokenizer)
+    st.success("Model has been saved locally!")
