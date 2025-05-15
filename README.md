@@ -1,4 +1,4 @@
-# Maliza_Chatbot
+# Maliza_Chatbot v.2.0
 Customer support Chatbot
 Did the code on VS code.
 Will run in virtual environment.
