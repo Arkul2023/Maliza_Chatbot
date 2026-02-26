@@ -4,4 +4,4 @@ This is a Customer support Chatbot prototype designed for Maliziasign Website wh
 Platforms used VS code for development, streamlit for deployment.
 
 
-Note:- Kindly run the code in python virtual environment and then save the model in a "malizia_model" directory. The model will be saved in the directory and further used.
+Deployment Link - https://malizachatbot-wyvqtdpmcyaly7azcjukmt.streamlit.app/
