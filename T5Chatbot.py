@@ -128,7 +128,8 @@ if st.button("🔄 Refresh Suggestions"):
     st.session_state.suggestions = random.sample(corpus_instructions, 4)
     st.rerun()
 
-# Save the model locally after training (you can call this when done with fine-tuning)
+# Save the model locally
 if st.button("💾 Save Model"):
     save_model(model, tokenizer)
     st.success("Model has been saved locally!")
+
